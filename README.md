@@ -36,7 +36,7 @@ This project is a **Chatbot Campaign Manager** that allows users to interact wit
 
 ##Project Structure
 
-chatbot-campaign-manager/
+**chatbot-campaign-manager/
 │
 ├── app.py                # Backend: Flask server and chatbot logic
 ├── index.html            # Frontend: Chat interface and campaign list
