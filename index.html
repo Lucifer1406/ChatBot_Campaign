@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Campaign Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #chatbox {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+        }
+        #campaigns {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chatbot Campaign Manager</h1>
+    <div id="chatbox">
+        <p><strong>Bot:</strong> Hello! How can I help you today?</p>
+    </div>
+    <input type="text" id="userInput" placeholder="Type your message here...">
+    <button onclick="sendMessage()">Send</button>
+
+    <div id="campaigns">
+        <h2>Campaigns</h2>
+        <ul id="campaignList"></ul>
+    </div>
+
+    <script>
+        const chatbox = document.getElementById('chatbox');
+        const userInput = document.getElementById('userInput');
+        const campaignList = document.getElementById('campaignList');
+
+        async function sendMessage() {
+            const message = userInput.value;
+            if (!message) return;
+
+            chatbox.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+
+            const response = await fetch('http://127.0.0.1:5000/chatbot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            });
+            const data = await response.json();
+
+            chatbox.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
+            chatbox.scrollTop = chatbox.scrollHeight;
+
+            userInput.value = '';
+        }
+
+        async function fetchCampaigns() {
+            const response = await fetch('http://127.0.0.1:5000/get_campaigns');
+            const data = await response.json();
+            campaignList.innerHTML = data.campaigns.map(campaign =>
+                `<li>${campaign[1]} - Budget: $${campaign[2]}, Audience: ${campaign[3]}, Summary: ${campaign[4]}</li>`
+            ).join('');
+        }
+
+        fetchCampaigns();
+    </script>
+</body>
+</html>
