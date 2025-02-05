@@ -32,7 +32,10 @@ This project is a **Chatbot Campaign Manager** that allows users to interact wit
    ```bash
    pip install flask flask-cors
 
-##Project Structure 
+---
+
+##Project Structure
+
 chatbot-campaign-manager/
 │
 ├── app.py                # Backend: Flask server and chatbot logic
